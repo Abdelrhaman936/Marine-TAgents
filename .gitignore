@@ -1,0 +1,9 @@
+__pycache__/
+qdrant_thing/
+.env
+.dockerignore
+custom_retrieve_agent.py
+LangChainAgent.ipynb
+LangGraph.ipynb
+requirements_deployed.txt
+test_allretrievers.py

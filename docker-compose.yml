@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .  # Committed image with app + Ollama
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"    # Your app’s port
+      - "11434:11434"  # Ollama’s port
+    environment:
+      - REDIS_URL=redis://redis-stack:6379/0
+      - OLLAMA_BASE_URL=http://localhost:11434  # Localhost since Ollama is in same container
+    networks:
+      - turtles-app-network
+    depends_on:
+      - redis-stack
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    networks:
+      - turtles-app-network
+networks:
+  turtles-app-network:
+    driver: bridge
