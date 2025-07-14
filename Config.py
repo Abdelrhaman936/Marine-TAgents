@@ -1,3 +1,4 @@
+print('arias')
 # from langchain_google_genai import ChatGoogleGenerativeAI , GoogleGenerativeAIEmbeddings
 from langchain_ollama import ChatOllama
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -8,8 +9,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-
 
 
 qwen = ChatOllama(model="qwen2.5" , temperature=0.05 , num_ctx=8192)
@@ -29,8 +28,8 @@ json_vectorstore_retriever = FAISS.load_local(json_vectorstore , embedder_model 
 excel_vectorstore_retriever = FAISS.load_local(question_answer , embedder_model , allow_dangerous_deserialization= True).as_retriever(kwargs={"k":3})
 
 if os.path.exists(online_data_path):
-    online_vectorstore_retriever = FAISS.load_local(online_data_path , embedder_model , allow_dangerous_deserialization=True).as_retriever(kwargs={"k":5})
-    
+    online_vectorstore_retriever = FAISS.load_local(online_data_path , embedder_model , allow_dangerous_deserialization=True).as_retriever(kwargs={"k":5})       
+
     all_retrievers = EnsembleRetriever(
     retrievers=[
         json_vectorstore_retriever , excel_vectorstore_retriever , online_vectorstore_retriever
@@ -40,12 +39,6 @@ if os.path.exists(online_data_path):
 else:
     all_retrievers = EnsembleRetriever(
     retrievers=[
-        json_vectorstore_retriever , excel_vectorstore_retriever 
+        json_vectorstore_retriever , excel_vectorstore_retriever
         ],
     weights= [0.5 , 0.5])
-
-
-
-
-
-
